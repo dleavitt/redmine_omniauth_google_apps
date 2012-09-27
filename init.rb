@@ -3,7 +3,7 @@ require "redmine_omniauth_google_apps"
 Redmine::Plugin.register :redmine_omniauth_google_apps do
   name 'Redmine Omniauth Google Apps plugin'
   author 'Daniel Leavitt'
-  description 'Allows login and automatic registration through a Google apps domain'
+  description 'Allows login and automatic registration through a Google Apps domain'
   version '0.0.1'
   url 'https://github.com/dleavitt/redmine_omniauth_google_apps'
   author_url 'https://github.com/dleavitt'
@@ -11,25 +11,10 @@ Redmine::Plugin.register :redmine_omniauth_google_apps do
             :default => { "domain" => '' }
 end
 
+Project # autoload breaks without doing this first
 
-Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :google_apps, :domain => "hyfn.com"
-end
+Setting.send :include, SettingExtension
+User.send :include, UserExtension
+AccountController.send :include, AccountControllerExtension
 
-module RedmineOmniauthGoogleApps
-  class Railtie < ::Rails::Railtie
-    config.to_prepare do
-      # have to do this for some reason
-      Project
-      
-      AccountController.send :include, GoogleAppsOmniauthLogin
-      User.send :include, GoogleAppsOmniauthUser
-    end
-  end
-end
-# 
-# RedmineApp::Application.after_initialize do
-#   Project # autoload fails otherwise
-#   # add mixins
-# 
-# end
+RedmineOmniauthGoogleApps.swap_middleware
