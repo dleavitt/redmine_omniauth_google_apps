@@ -9,7 +9,9 @@ module RedmineOmniauthGoogleApps
       stack = Rails.application.config.middleware
       middleware = RedmineOmniauthGoogleApps::Middleware
       
-      stack.delete middleware if stack.include? middleware
+      if stack.respond_to?(:include?) && stack.include?(middleware)
+        stack.delete middleware 
+      end
       
       stack.use middleware do
         provider :google_apps, :domain => domain

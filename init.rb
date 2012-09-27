@@ -9,11 +9,13 @@ Redmine::Plugin.register :redmine_omniauth_google_apps do
   author_url 'https://github.com/dleavitt'
   settings  :partial => "omniauth_google_apps",
             :default => { "domain" => '' }
+end
 
 Project # autoload breaks without doing this first
 
-Setting.send :include, SettingExtension
-User.send :include, UserExtension
-AccountController.send :include, AccountControllerExtension
+
+Setting.send :include, RedmineOmniauthGoogleApps::SettingExtension
+User.send :include, RedmineOmniauthGoogleApps::UserExtension
+AccountController.send :include, RedmineOmniauthGoogleApps::AccountControllerExtension
 
 RedmineOmniauthGoogleApps.swap_middleware
