@@ -1,3 +1,5 @@
 # English strings go here for Rails i18n
 en:
   label_ga_domain: "Google Apps Domain"
+  label_ga_domain_warning: "Note: A server restart will be required for this change to take effect."
+  label_ga_login: "Log in via Google Apps"
